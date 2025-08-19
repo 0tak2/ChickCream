@@ -38,11 +38,11 @@ struct QuestionView: View {
                     ForEach(viewModel.selectedQuestion.options.indices, id: \.self) { index in
                         QuestionOptionButton(
                             title: viewModel.selectedQuestion.options[index],
-                            type: .half,
                             isDisabled: viewModel.selectedQuestion.selectedOptionIndex != index
                         ) {
                             viewModel.selectOption(at: index)
                         }
+                        .frame(width: 173, height: 160)
                     }
                 }
                 .padding(.bottom, halfButtonsBottomPadding)
@@ -52,11 +52,11 @@ struct QuestionView: View {
                         ForEach(viewModel.selectedQuestion.options.indices[0..<2], id: \.self) { index in
                             QuestionOptionButton(
                                 title: viewModel.selectedQuestion.options[index],
-                                type: .quarter,
                                 isDisabled: viewModel.selectedQuestion.selectedOptionIndex != index
                             ) {
                                 viewModel.selectOption(at: index)
                             }
+                            .frame(width: 173, height: 144)
                         }
                     }
                     
@@ -64,11 +64,11 @@ struct QuestionView: View {
                         ForEach(viewModel.selectedQuestion.options.indices[2..<4], id: \.self) { index in
                             QuestionOptionButton(
                                 title: viewModel.selectedQuestion.options[index],
-                                type: .quarter,
                                 isDisabled: viewModel.selectedQuestion.selectedOptionIndex != index
                             ) {
                                 viewModel.selectOption(at: index)
                             }
+                            .frame(width: 173, height: 144)
                         }
                     }
                 }
