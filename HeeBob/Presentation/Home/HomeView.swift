@@ -12,6 +12,7 @@ struct HomeView: View {
     let onboardingButtonColor = Color(hex: "#1C1B1F")
     @StateObject private var router = NavigationRouter()
     @State private var shouldShowOnboarding: Bool = false
+    @Namespace private var transitionNamespace
     
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -80,10 +81,13 @@ struct HomeView: View {
                 case .result(let userAnswer):
                     ResultsView(userAnswer: userAnswer).environmentObject(router)
                 case .favorite:
-                    FavoriteListView().environmentObject(router)
+                    FavoriteListView(transitionNamespace: transitionNamespace).environmentObject(router)
                 case .search:
                     SearchView().environmentObject(router)
-                case .detail(let Food):
+                case .favoriteMenuDetail(let Food):
+                    FavoriteDetailView(transitionNamespace: transitionNamespace, food: Food)
+                        .environmentObject(router)
+                case .menuDetail(let Food):
                     MenuDetailView(food: Food)
                         .environmentObject(router)
                 }

@@ -15,5 +15,6 @@ enum Route: Hashable {
     case result(userAnswer: UserAnswer)
     case favorite
     case search
-    case detail(food: Food)
+    case menuDetail(food: Food)
+    case favoriteMenuDetail(food: Food)
 }

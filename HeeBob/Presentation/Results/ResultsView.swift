@@ -97,7 +97,7 @@ extension ResultsView {
                     switch item {
                     case .food(let food):
                         ResultCard(food: food) {
-                            router.push(.detail(food: food))
+                            router.push(.menuDetail(food: food))
                         }
                         .id(item.id)
                         .scrollTransition(){ content, phase in
