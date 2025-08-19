@@ -11,7 +11,7 @@ import SwiftUI
 enum Route: Hashable {
     // Hashable을 채택해야 NavigationPath에서 활용 가능
     case question(id: UUID)
-    case loading
+    case loading(userAnswer: UserAnswer)
     case result(userAnswer: UserAnswer)
     case favorite
     case search
