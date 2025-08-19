@@ -172,22 +172,23 @@ extension ResultsView {
         do {
             let newFoods = try fetchMatchingFoods(limit: 2, excluding: fetchedFoodIDs)
             
-            if newFoods.isEmpty {
-                hasMoreRecommendations = false
-                updateCarouselItems(with: resultFoods)
-                return
+            withAnimation(.spring(duration: 0.2)) {
+                if newFoods.isEmpty {
+                    hasMoreRecommendations = false
+                    updateCarouselItems(with: resultFoods)
+                    return
+                }
+                
+                let firstFood = newFoods[0]
+                fetchedFoodIDs.insert(firstFood.id)
+                resultFoods.append(firstFood)
+                insertFoodBeforeAddCard(firstFood)
+                
+                if newFoods.count == 1 {
+                    hasMoreRecommendations = false
+                    updateCarouselItems(with: resultFoods)
+                }
             }
-            
-            let firstFood = newFoods[0]
-            fetchedFoodIDs.insert(firstFood.id)
-            resultFoods.append(firstFood)
-            insertFoodBeforeAddCard(firstFood)
-            
-            if newFoods.count == 1 {
-                hasMoreRecommendations = false
-                updateCarouselItems(with: resultFoods)
-            }
-            
         } catch {
             print("❌ Failed to load one more food: \(error)")
         }
