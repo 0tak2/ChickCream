@@ -75,8 +75,8 @@ struct HomeView: View {
                 switch route {
                 case .question(let id):
                     QuestionView().environmentObject(router).id(id)
-                case .loading:
-                    ResultLoadingView().environmentObject(router)
+                case .loading(let userAnswer):
+                    ResultLoadingView(userAnswer: userAnswer).environmentObject(router)
                 case .result(let userAnswer):
                     ResultsView(userAnswer: userAnswer).environmentObject(router)
                 case .favorite:

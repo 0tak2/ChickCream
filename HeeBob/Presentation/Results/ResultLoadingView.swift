@@ -9,7 +9,9 @@ import SwiftUI
 import Lottie
 
 struct ResultLoadingView: View {
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var router: NavigationRouter
+    
+    let userAnswer: UserAnswer
     
     var body: some View {
         ZStack {
@@ -29,15 +31,17 @@ struct ResultLoadingView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden()
         .onAppear {
             Task {
                 try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초
-                dismiss()
+                router.pop() // 현재 뷰는 네비게이션 스택에서 제거
+                router.push(.result(userAnswer: userAnswer))
             }
         }
     }
 }
 
 #Preview {
-    ResultLoadingView()
+    ResultLoadingView(userAnswer: UserAnswer(isPortable: true, isCookable: true, mainIngredient: .beanTofuEgg))
 }

@@ -104,7 +104,7 @@ struct QuestionView: View {
                        let userAnswer = viewModel.finalAnswer {
                         print(userAnswer)
                         
-                        router.push(.result(userAnswer: userAnswer))
+                        router.push(.loading(userAnswer: userAnswer))
                     } else {
                         viewModel.showNextQuestion()
                     }
