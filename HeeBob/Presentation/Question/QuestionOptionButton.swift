@@ -9,30 +9,48 @@ import SwiftUI
 
 struct QuestionOptionButton: View {
     let title: String
-    let type: QuestionOptionButtonType
     let isDisabled: Bool
     let didTap: () -> Void
     
-    var body: some View {
-        Button {
-            didTap()
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(isDisabled ? Color.clear : Color.hbPrimaryLighten)
-                    .stroke(isDisabled ? Color.hbDisabled : Color.hbPrimary, style: .init(lineWidth: 3))
-                    .frame(width: 173, height: type == .half ? 160 : 144 )
-                
-                Text(title)
-                    .font(.hbSubtitle)
-                    .foregroundStyle(isDisabled ? Color.hbDisabled : Color.hbPrimary)
-            }
-        }
-
+    private var baseFillColor: Color {
+        isDisabled ? .clear : .hbPrimaryLighten
     }
     
-    enum QuestionOptionButtonType {
-        case half
-        case quarter
+    private var baseStrokeColor: Color {
+        isDisabled ? .hbDisabled : .hbPrimary
+    }
+
+    var body: some View {
+        Button(action: didTap) {
+            Text(title)
+                .font(.hbSubtitle)
+                .foregroundStyle(isDisabled ? Color.hbDisabled : Color.hbPrimary)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        }
+        .buttonStyle(
+            QuestionOptionButtonStyle(
+                fillColor: baseFillColor,
+                strokeColor: baseStrokeColor
+            )
+        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct QuestionOptionButtonStyle: ButtonStyle {
+    let fillColor: Color
+    let strokeColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .multilineTextAlignment(.center)
+            .contentShape(Rectangle()) // 터치 영역
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(configuration.isPressed ? Color.hbPrimary : fillColor)
+                    .stroke(strokeColor, lineWidth: 3)
+            )
+            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
     }
 }
