@@ -111,7 +111,7 @@ struct SearchView: View {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(favorites) { favorite in
                             Button {
-                                router.push(.detail(food: favorite.food))
+                                router.push(.menuDetail(food: favorite.food))
                             } label: {
                                 FavoriteMenuCard(food: favorite.food, favorite: favorite)
                             }

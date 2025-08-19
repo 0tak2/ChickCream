@@ -15,11 +15,13 @@ struct FavoriteListView: View {
     
     @EnvironmentObject var router: NavigationRouter
     
+    let transitionNamespace: Namespace.ID
+    
     var body: some View {
         VStack(spacing: 0) {
             FavoriteFilterControl(favoriteViewModel: favoriteViewModel)
-            CardGrid(favorites: favoriteViewModel.favorites) { favorite in
-                router.push(.detail(food: favorite.food))
+            CardGrid(transitionNamespace: transitionNamespace, favorites: favoriteViewModel.favorites) { favorite in
+                router.push(.favoriteMenuDetail(food: favorite.food))
             }
         }
         .onAppear {
@@ -51,6 +53,8 @@ struct FavoriteListView: View {
 }
 
 struct CardGrid: View {
+    let transitionNamespace: Namespace.ID
+    
     var favorites: [Favorite]
 
     let columns = [
@@ -60,7 +64,8 @@ struct CardGrid: View {
     
     let didItemTap: (_ favorite: Favorite) -> Void
     
-    init(favorites: [Favorite], didItemTap: @escaping (_ favorite: Favorite) -> Void) {
+    init(transitionNamespace: Namespace.ID, favorites: [Favorite], didItemTap: @escaping (_ favorite: Favorite) -> Void) {
+        self.transitionNamespace = transitionNamespace
         self.favorites = favorites
         self.didItemTap = didItemTap
     }
@@ -76,6 +81,7 @@ struct CardGrid: View {
                         FavoriteMenuCard(food: favorite.food, favorite: favorite)
                             .padding(.horizontal, 8)
                     }
+                    .matchedTransitionSource(id: favorite.food.id, in: transitionNamespace)
                 }
             }
             .padding(.horizontal, 16)
@@ -84,7 +90,15 @@ struct CardGrid: View {
 }
 
 #if DEBUG
-#Preview(traits: .sampleData) {
-    FavoriteListView()
+struct FavoriteListView_Previews: PreviewProvider {
+    struct TestView: View {
+        @Namespace var namespace
+        var body: some View {
+            FavoriteListView(transitionNamespace: namespace)
+        }
+    }
+    static var previews: some View {
+        TestView()
+    }
 }
 #endif
